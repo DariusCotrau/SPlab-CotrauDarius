@@ -1,4 +1,4 @@
-public class Author extends TableOfContents {
+public class Author {
     private String name;
 
     public Author(String name) {
@@ -11,6 +11,10 @@ public class Author extends TableOfContents {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void print() {
+        System.out.println("Author: " + name);
     }
 }
 

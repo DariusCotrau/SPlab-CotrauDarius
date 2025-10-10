@@ -1,4 +1,3 @@
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,45 +22,16 @@ public class TableOfContents {
         entries.add(new Entry(title, page));
     }
 
-    // Print simplificat și moștenit de toate clasele
+    // Print explicit pentru cuprins
     public void print() {
-        String kind = getClass().getSimpleName();
-        String label = firstNonEmptyField(this, "name", "title", "text", "imageName");
-        if (label.isEmpty()) {
-            System.out.println(kind);
-        } else {
-            System.out.println(kind + ": " + label);
-        }
-    }
-
-    private static String firstNonEmptyField(Object target, String... fieldNames) {
-        for (String f : fieldNames) {
-            Field field = findField(target.getClass(), f);
-            if (field != null) {
-                try {
-                    field.setAccessible(true);
-                    Object v = field.get(target);
-                    if (v != null) {
-                        String s = String.valueOf(v);
-                        if (!s.isEmpty()) return s;
-                    }
-                } catch (IllegalAccessException ignored) {
-                }
+        System.out.println("TableOfContents");
+        for (Entry e : entries) {
+            if (e.page != null) {
+                System.out.println(" - " + e.title + " .... " + e.page);
+            } else {
+                System.out.println(" - " + e.title);
             }
         }
-        return "";
-    }
-
-    private static Field findField(Class<?> cls, String name) {
-        Class<?> c = cls;
-        while (c != null) {
-            try {
-                return c.getDeclaredField(name);
-            } catch (NoSuchFieldException e) {
-                c = c.getSuperclass();
-            }
-        }
-        return null;
     }
 }
 

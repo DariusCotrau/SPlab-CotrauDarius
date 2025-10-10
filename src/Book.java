@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book extends TableOfContents {
+public class Book {
     String title;
     private final List<Author> authors = new ArrayList<>();
-    private final List<Chapter> chapters = new ArrayList<>();
+    private final List<Element> content = new ArrayList<>();
     private final TableOfContents tableOfContents = new TableOfContents(); // asociere
 
     public Book(String title) {
@@ -21,28 +21,44 @@ public class Book extends TableOfContents {
         authors.add(author);
     }
 
-    public Chapter addChapter(String name) {
-        Chapter c = new Chapter(name);
-        chapters.add(c);
-        // exemplu: adăugăm capitolul și în TOC-ul asociat
+    public Section addSection(String name) {
+        Section s = new Section(name);
+        content.add(s);
         tableOfContents.addEntry(name);
-        return c;
+        return s;
     }
 
-    public Chapter getChapter(int index) {
-        return chapters.get(index);
+    public void addContent(Element el) {
+        content.add(el);
+    }
+
+    public Element getContent(int index) {
+        return content.get(index);
     }
 
     public List<Author> getAuthors() {
         return authors;
     }
 
-    public List<Chapter> getChapters() {
-        return chapters;
+    public List<Element> getContent() {
+        return content;
     }
 
     public TableOfContents getTableOfContents() {
         return tableOfContents;
+    }
+
+    public void print() {
+        System.out.println("Book: " + title);
+        if (!authors.isEmpty()) {
+            System.out.println("Authors:");
+            for (Author a : authors) {
+                a.print();
+            }
+        }
+        for (Element e : content) {
+            e.print();
+        }
     }
 }
 
