@@ -9,5 +9,9 @@ public class Table implements Element {
     public void print() {
         System.out.println("Table: " + title);
     }
-}
 
+    @Override
+    public Element copy() {
+        return new Table(this.title);
+    }
+}

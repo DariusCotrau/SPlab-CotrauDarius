@@ -1,14 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
-    String title;
+public class Book extends Section {
     private final List<Author> authors = new ArrayList<>();
-    private final List<Element> content = new ArrayList<>();
-    private final TableOfContents tableOfContents = new TableOfContents(); // asociere
+    private final TableOfContents tableOfContents = new TableOfContents();
 
     public Book(String title) {
-        this.title = title;
+        super(title);
     }
 
     public Author addAuthor(String name) {
@@ -21,44 +19,45 @@ public class Book {
         authors.add(author);
     }
 
+    // Helper for backwards compatibility with earlier labs
+    public void addContent(Element el) {
+        super.add(el);
+    }
+
     public Section addSection(String name) {
         Section s = new Section(name);
-        content.add(s);
+        super.add(s);
         tableOfContents.addEntry(name);
         return s;
-    }
-
-    public void addContent(Element el) {
-        content.add(el);
-    }
-
-    public Element getContent(int index) {
-        return content.get(index);
     }
 
     public List<Author> getAuthors() {
         return authors;
     }
 
-    public List<Element> getContent() {
-        return content;
-    }
-
     public TableOfContents getTableOfContents() {
         return tableOfContents;
     }
 
+    @Override
+    protected void printThisBefore() {
+        // Book should not print its own title as a plain section title here
+        // Title and authors are handled in print() below.
+    }
+
+    @Override
     public void print() {
-        System.out.println("Book: " + title);
+        System.out.println("Book: " + getTitle());
+        System.out.println();
         if (!authors.isEmpty()) {
             System.out.println("Authors:");
             for (Author a : authors) {
                 a.print();
             }
+            System.out.println();
         }
-        for (Element e : content) {
-            e.print();
-        }
+        // Delegate traversal to Section.print(), but with the book's own
+        // title suppressed via overridden printThisBefore().
+        super.print();
     }
 }
-
