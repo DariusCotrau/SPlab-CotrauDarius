@@ -4,7 +4,9 @@ import ro.uvt.books.model.Book;
 import ro.uvt.books.model.BookRequest;
 import ro.uvt.books.service.BooksService;
 
-public class UpdateBookCommand implements Command<Book> {
+import java.util.Optional;
+
+public class UpdateBookCommand implements Command<Optional<Book>> {
     private final BooksService booksService;
     private final long id;
     private final BookRequest request;
@@ -16,7 +18,7 @@ public class UpdateBookCommand implements Command<Book> {
     }
 
     @Override
-    public Book execute() {
+    public Optional<Book> execute() {
         return booksService.replace(id, request);
     }
 }

@@ -1,49 +1,60 @@
 package ro.uvt.books.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.uvt.books.model.Book;
 import ro.uvt.books.model.BookRequest;
+import ro.uvt.books.persistence.BookRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class BooksService {
-    private final Map<Long, Book> books = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private final BookRepository bookRepository;
 
-    public BooksService() {
-        // Seed with a couple of demo books to keep responses interesting.
-        create(new BookRequest("Clean Code", "Robert C. Martin", "9780132350884"));
-        create(new BookRequest("Design Patterns", "Erich Gamma", "9780201633610"));
+    public BooksService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+        seedData();
     }
 
     public List<Book> findAll() {
-        return new ArrayList<>(books.values());
+        return bookRepository.findAll();
     }
 
     public Optional<Book> findById(long id) {
-        return Optional.ofNullable(books.get(id));
+        return bookRepository.findById(id);
     }
 
+    @Transactional
     public Book create(BookRequest request) {
-        long id = idGenerator.incrementAndGet();
-        Book book = new Book(id, request.getTitle(), request.getAuthor(), request.getIsbn());
-        books.put(id, book);
-        return book;
+        Book book = new Book(request.getTitle(), request.getAuthor(), request.getIsbn());
+        return bookRepository.save(book);
     }
 
-    public Book replace(long id, BookRequest request) {
-        Book book = new Book(id, request.getTitle(), request.getAuthor(), request.getIsbn());
-        books.put(id, book);
-        return book;
+    @Transactional
+    public Optional<Book> replace(long id, BookRequest request) {
+        return bookRepository.findById(id).map(existing -> {
+            existing.setTitle(request.getTitle());
+            existing.setAuthor(request.getAuthor());
+            existing.setIsbn(request.getIsbn());
+            return bookRepository.save(existing);
+        });
     }
 
+    @Transactional
     public boolean delete(long id) {
-        return books.remove(id) != null;
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    private void seedData() {
+        if (bookRepository.count() == 0) {
+            bookRepository.save(new Book("Clean Code", "Robert C. Martin", "9780132350884"));
+            bookRepository.save(new Book("Design Patterns", "Erich Gamma", "9780201633610"));
+        }
     }
 }

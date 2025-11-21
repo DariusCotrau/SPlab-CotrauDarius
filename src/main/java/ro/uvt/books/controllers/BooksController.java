@@ -66,12 +66,8 @@ public class BooksController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> replaceBook(@PathVariable long id, @RequestBody BookRequest request) {
-        Optional<Book> existing = commandExecutor.execute(new GetBookByIdCommand(booksService, id));
-        if (existing.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Book updated = commandExecutor.execute(new UpdateBookCommand(booksService, id, request));
-        return ResponseEntity.ok(updated);
+        Optional<Book> updated = commandExecutor.execute(new UpdateBookCommand(booksService, id, request));
+        return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
