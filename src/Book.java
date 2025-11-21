@@ -19,7 +19,6 @@ public class Book extends Section {
         authors.add(author);
     }
 
-    // Helper for backwards compatibility with earlier labs
     public void addContent(Element el) {
         super.add(el);
     }
@@ -41,8 +40,6 @@ public class Book extends Section {
 
     @Override
     protected void printThisBefore() {
-        // Book should not print its own title as a plain section title here
-        // Title and authors are handled in print() below.
     }
 
     @Override
@@ -56,8 +53,6 @@ public class Book extends Section {
             }
             System.out.println();
         }
-        // Delegate traversal to Section.print(), but with the book's own
-        // title suppressed via overridden printThisBefore().
         super.print();
     }
 }

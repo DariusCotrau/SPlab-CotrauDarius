@@ -15,7 +15,6 @@ public class MainStrategy {
         System.out.println();
         cap1.print();
 
-        // With Solution 1 (clone on add), set alignment before adding or rebuild the section.
         p1.setAlignStrategy(new AlignCenter());
         p2.setAlignStrategy(new AlignRight());
         p3.setAlignStrategy(new AlignLeft());
@@ -24,7 +23,6 @@ public class MainStrategy {
         System.out.println("Printing with Alignment");
         System.out.println();
 
-        // Rebuild the section so cloned elements capture alignments
         Section cap1Aligned = new Section("Capitolul 1");
         cap1Aligned.add(p1);
         cap1Aligned.add(p2);
@@ -33,4 +31,3 @@ public class MainStrategy {
         cap1Aligned.print();
     }
 }
-

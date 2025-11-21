@@ -7,7 +7,6 @@ public class Main {
 
         noapteBuna.addContent(new Paragraph("Multumesc celor care ..."));
 
-        // Build the structure using the composite-friendly helpers to avoid sharing
         Section cap1 = noapteBuna.addSection("Capitolul 1");
         cap1.addParagraph("Moto capitol");
 

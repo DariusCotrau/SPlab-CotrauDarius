@@ -11,6 +11,7 @@ import ro.uvt.books.executor.CommandExecutor;
 import ro.uvt.books.executor.JobStatus;
 import ro.uvt.books.model.Book;
 import ro.uvt.books.model.BookRequest;
+import ro.uvt.books.observer.AllBooksSubject;
 import ro.uvt.books.service.BooksService;
 
 import java.net.URI;
@@ -26,13 +27,16 @@ public class BooksController {
     private final BooksService booksService;
     private final CommandExecutor commandExecutor;
     private final AsyncCommandExecutor asyncCommandExecutor;
+    private final AllBooksSubject allBooksSubject;
 
     public BooksController(BooksService booksService,
                            CommandExecutor commandExecutor,
-                           AsyncCommandExecutor asyncCommandExecutor) {
+                           AsyncCommandExecutor asyncCommandExecutor,
+                           AllBooksSubject allBooksSubject) {
         this.booksService = booksService;
         this.commandExecutor = commandExecutor;
         this.asyncCommandExecutor = asyncCommandExecutor;
+        this.allBooksSubject = allBooksSubject;
     }
 
     @GetMapping
@@ -48,7 +52,7 @@ public class BooksController {
 
     @PostMapping
     public ResponseEntity<?> createBook(@RequestBody BookRequest request) {
-        AsyncJob<Book> job = asyncCommandExecutor.submit(new CreateBookCommand(booksService, request));
+        AsyncJob<Book> job = asyncCommandExecutor.submit(new CreateBookCommand(booksService, request, allBooksSubject));
 
         URI statusUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/requests/{id}")

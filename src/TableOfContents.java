@@ -22,7 +22,6 @@ public class TableOfContents {
         entries.add(new Entry(title, page));
     }
 
-    // Print explicit pentru cuprins
     public void print() {
         System.out.println("TableOfContents");
         for (Entry e : entries) {
@@ -34,4 +33,3 @@ public class TableOfContents {
         }
     }
 }
-

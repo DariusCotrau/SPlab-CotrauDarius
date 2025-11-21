@@ -17,7 +17,6 @@ public class Book {
     private String isbn;
 
     protected Book() {
-        // For JPA
     }
 
     public Book(String title, String author, String isbn) {

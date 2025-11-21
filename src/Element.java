@@ -1,7 +1,6 @@
 public interface Element {
     void print();
 
-    // Used by Solution 1 (clone on add)
     Element copy();
 
     default void add(Element element) {

@@ -9,10 +9,8 @@ public class Section implements Element {
         this.title = title;
     }
 
-    // Composite operations
     @Override
     public void add(Element element) {
-        // Solution 1: clone on add to prevent sharing
         children.add(element.copy());
     }
 
@@ -34,12 +32,10 @@ public class Section implements Element {
         return title;
     }
 
-    // Hook for subclasses (e.g., Book) to customize what prints before children
     protected void printThisBefore() {
         System.out.println(title);
     }
 
-    // Convenience builders
     public Section addSection(String name) {
         Section s = new Section(name);
         this.add(s);
@@ -76,7 +72,7 @@ public class Section implements Element {
     public Element copy() {
         Section s = new Section(this.title);
         for (Element e : this.children) {
-            s.add(e); // add will clone each element again (deep copy)
+            s.add(e);
         }
         return s;
     }
