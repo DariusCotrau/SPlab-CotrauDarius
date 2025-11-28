@@ -1,0 +1,4 @@
+Titlu: API pentru managementul adoptiilor dintr-un adapost de animale
+Tehnologii: Spring Boot (REST), JPA, baza de date MySQL (H2 pentru dev)
+Descriere pe scurt: Serviciu care administreaza animalele din adapost, vizitatorii interesati si cererile lor de adoptie, cu trasabilitate pentru starea fiecarui animal (nou sosit, in evaluare, disponibil, adoptat) si istoricul interactiunilor.
+Motivatie: Tema clara de management de date cu reguli de business naturale (eligibilitate adoptie, blocare animal in curs de adoptie, istorice), usor de extins cu notificari, programari vizite sau aprobari pe roluri (admin, voluntar).
